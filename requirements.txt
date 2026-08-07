@@ -1,0 +1,7 @@
+google-api-python-client
+praw
+youtube-transcript-api
+langchain
+langchain-ollama
+python-dotenv
+pydantic

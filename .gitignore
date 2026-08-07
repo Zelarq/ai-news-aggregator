@@ -1,0 +1,16 @@
+# Environment secrets
+.env
+
+# Local SQLite databases
+*.db
+*.db-journal
+*.db-wal
+
+# Python virtual environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Local log files
+*.log
