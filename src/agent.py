@@ -3,6 +3,7 @@ import re
 import logging
 import argparse
 import urllib.request
+from typing import Literal
 from pydantic import BaseModel, Field
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
@@ -10,17 +11,34 @@ from src.config import Config
 
 # Allowed categories taxonomy
 CATEGORIES = ["Model Release", "Research Paper", "Tool/Framework", "Industry News", "Community Discussion"]
+CategoryType = Literal["Model Release", "Research Paper", "Tool/Framework", "Industry News", "Community Discussion"]
 
 class NewsItemSummary(BaseModel):
     summary: str = Field(description="A concise 2-3 sentence summary of the news item, focusing on key technical facts.")
-    category: str = Field(description="One of: 'Model Release', 'Research Paper', 'Tool/Framework', 'Industry News', 'Community Discussion'")
+    category: CategoryType = Field(description="One of: 'Model Release', 'Research Paper', 'Tool/Framework', 'Industry News', 'Community Discussion'")
 
 def is_ollama_running():
-    """Checks if Ollama service is reachable at the configured URL."""
+    """Checks if Ollama service is reachable and if the configured model is available."""
     try:
         url = f"{Config.OLLAMA_BASE_URL}/api/tags"
         with urllib.request.urlopen(url, timeout=2) as response:
-            return response.status == 200
+            if response.status != 200:
+                return False
+            data = json.loads(response.read().decode("utf-8"))
+            available_models = [m.get("name", "") for m in data.get("models", [])]
+            configured = Config.OLLAMA_MODEL
+            # Match exact name (e.g. 'qwen2.5-coder:3b') or base name prefix
+            model_found = any(
+                configured == m or configured == m.split(":")[0] or configured.split(":")[0] == m.split(":")[0]
+                for m in available_models
+            )
+            if not model_found:
+                logging.warning(
+                    f"Ollama is running, but configured model '{configured}' was not found. "
+                    f"Installed models: {available_models}. Defaulting to keyword heuristics."
+                )
+                return False
+            return True
     except Exception:
         return False
 

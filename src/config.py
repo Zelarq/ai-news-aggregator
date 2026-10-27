@@ -17,7 +17,7 @@ class Config:
     GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD")
     DIGEST_RECIPIENT = os.getenv("DIGEST_RECIPIENT")
     
-    OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2:3b")
+    OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5-coder:3b")
     OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
     
     DB_PATH = os.getenv("DB_PATH", "news_digest.db")

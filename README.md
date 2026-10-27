@@ -4,7 +4,7 @@ A fully automated, local-first Python pipeline that aggregates, deduplicates, an
 
 ## 🚀 Key Features
 * **Multi-Source Ingestion:** Fetches top stories and trends from Hacker News, Reddit, and YouTube.
-* **Local LLM Summarization:** Uses `llama3.2:3b` via Ollama and LangChain to generate high-quality 2-3 sentence summaries entirely locally (with a keyword heuristic fallback).
+* **Local LLM Summarization:** Uses `qwen2.5-coder:3b` (or `llama3.2:3b`) via Ollama and LangChain to generate high-quality 2-3 sentence summaries entirely locally (with a keyword heuristic fallback).
 * **Automated Categorization:** Classifies articles into strict categories (Model Release, Research Paper, Tool/Framework, Industry News, Community Discussion).
 * **Smart Deduplication:** Uses a local SQLite database to track processed articles and prevent duplicate emails.
 * **Zero-Touch Automation:** Runs silently in the background daily via Windows Task Scheduler.
@@ -13,7 +13,7 @@ A fully automated, local-first Python pipeline that aggregates, deduplicates, an
 ## 🛠️ Technology Stack
 * **Language:** Python 3.11+
 * **Database:** SQLite (local state management)
-* **AI / ML:** LangChain, Ollama (Llama 3.2 3B)
+* **AI / ML:** LangChain, Ollama (Qwen 2.5 Coder 3B / Llama 3.2 3B)
 * **APIs:** Hacker News (Firebase REST), YouTube Data API v3, Reddit (PRAW)
 * **Automation:** PowerShell, Windows Task Scheduler, SMTP (MIMEMultipart)
 
